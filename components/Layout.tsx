@@ -3,11 +3,17 @@ import link from "next/link";
 import styles from "./layout.module.css";
 import utilStyles from "./utils.module.css";
 import Link from "next/link";
+import PropTypes from "prop-types";
 
-const name = "Twinkie the Kitten";
+const name = "Twinkle the Kitten";
 export const siteTitle = "Next.js Sample Website";
 
-export default ({ children, home }) => {
+export interface LayoutProps {
+  children: any;
+  home: Boolean | null;
+}
+
+function Layout({ children, home }: LayoutProps) {
   return (
     <div className={styles.container}>
       <Head>
@@ -64,4 +70,14 @@ export default ({ children, home }) => {
       )}
     </div>
   );
+}
+
+Layout.propTypes = {
+  home: PropTypes.bool,
 };
+
+Layout.defaultProps = {
+  home: false,
+};
+
+export default Layout;

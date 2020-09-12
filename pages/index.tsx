@@ -4,8 +4,9 @@ import Layout from "../components/Layout";
 import utilStyles from "../components/utils.module.css";
 import { getSortedPostsData } from "../lib/posts";
 import Date from "../components/date";
+import { GetStaticProps } from "next";
 
-export default function Home({ allPostsData }) {
+export default function Home({ allPostsData }: HomeProps) {
   return (
     <Layout home>
       <Head>
@@ -14,7 +15,7 @@ export default function Home({ allPostsData }) {
       </Head>
       <section className={utilStyles.headingMd}>
         <p>
-          Hey there! I'm <strong>Twinkie</strong>. I'm currently sitting down in
+          Hey there! I'm <strong>Twinkle</strong>. I'm currently sitting down in
           this cozy carton box.
         </p>
       </section>
@@ -26,7 +27,7 @@ export default function Home({ allPostsData }) {
   );
 
   function getPostsUI() {
-    return allPostsData.map(({ id, date, title }) => (
+    return allPostsData.map(({ id, date, title }: PostData) => (
       <li className={utilStyles.listItem} key={id}>
         <Link href="/posts/[id]" as={`/posts/${id}`}>
           <a>{title}</a>
@@ -40,11 +41,15 @@ export default function Home({ allPostsData }) {
   }
 }
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = async () => {
   const allPostsData = getSortedPostsData();
   return {
     props: {
       allPostsData,
     },
   };
+};
+
+interface HomeProps {
+  allPostsData: PostData[];
 }

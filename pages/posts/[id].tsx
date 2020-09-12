@@ -3,8 +3,9 @@ import Layout from "../../components/Layout";
 import { getAllPostIds, getPostData } from "../../lib/posts";
 import Date from "../../components/date";
 import styles from "../../components/utils.module.css";
+import { GetStaticPaths, GetStaticProps } from "next";
 
-export default function Post({ postData }) {
+export default function Post({ postData }: PostProps) {
   return (
     <Layout>
       <Head>
@@ -23,18 +24,29 @@ export default function Post({ postData }) {
   );
 }
 
-export async function getStaticPaths() {
+export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: getAllPostIds(),
     fallback: false,
   };
-}
+};
 
-export async function getStaticProps({ params }) {
-  const postData = await getPostData(params.id);
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const id = params?.id;
+
+  if (typeof id === "string") {
+    const postData: PostData = await getPostData(id);
+    return {
+      props: {
+        postData,
+      },
+    };
+  }
+
   return {
-    props: {
-      postData,
-    },
+    props: {},
   };
+};
+interface PostProps {
+  postData: PostData;
 }
